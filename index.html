@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Find my Doctor - Field Directory</title>
+    <title>Find my Doctor - Field App</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         /* --- CSS Theme Variables --- */
@@ -42,7 +42,7 @@
             overflow-x: hidden;
         }
 
-        /* --- Header & Search --- */
+        /* --- Header --- */
         header {
             background: var(--card-bg);
             padding: 15px 20px;
@@ -56,53 +56,33 @@
         }
 
         .hamburger {
-            position: absolute;
-            left: 20px;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--primary);
-            background: none;
-            border: none;
+            position: absolute; left: 20px;
+            font-size: 1.5rem; cursor: pointer;
+            color: var(--primary); background: none; border: none;
         }
 
         header h1 { font-size: 1.25rem; font-weight: 700; color: var(--primary); }
 
-        .search-wrapper {
-            max-width: 600px;
-            margin: 20px auto;
-            padding: 0 15px;
-        }
+        .search-wrapper { max-width: 600px; margin: 20px auto; padding: 0 15px; }
 
         #searchInput {
-            width: 100%;
-            padding: 12px 25px;
-            border-radius: 50px;
-            border: 1px solid var(--border);
-            background: var(--card-bg);
-            color: var(--text-main);
-            font-size: 1rem;
-            outline: none;
+            width: 100%; padding: 12px 25px; border-radius: 50px;
+            border: 1px solid var(--border); background: var(--card-bg);
+            color: var(--text-main); font-size: 1rem; outline: none;
             box-shadow: 0 2px 8px var(--shadow);
         }
 
         /* --- Sidebar Menu --- */
         #sidebar {
-            position: fixed;
-            top: 0; left: -300px;
-            width: 300px; height: 100%;
-            background: var(--sidebar-bg);
-            z-index: 1000;
-            box-shadow: 5px 0 15px var(--shadow);
-            transition: 0.3s ease;
-            padding: 30px 20px;
+            position: fixed; top: 0; left: -300px; width: 300px; height: 100%;
+            background: var(--sidebar-bg); z-index: 1000;
+            box-shadow: 5px 0 15px var(--shadow); transition: 0.3s ease; padding: 30px 20px;
         }
 
         #sidebar.active { left: 0; }
         .sidebar-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5);
-            display: none; z-index: 999;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); display: none; z-index: 999;
         }
 
         .sidebar-section { margin-bottom: 30px; }
@@ -110,7 +90,6 @@
         .sidebar-section p { font-size: 0.85rem; line-height: 1.5; color: var(--text-main); }
         .sidebar-section a { color: var(--primary); text-decoration: none; font-weight: 600; }
 
-        /* Dark Mode Toggle */
         .toggle-row { display: flex; align-items: center; justify-content: space-between; margin-top: 15px; }
         .switch { position: relative; width: 45px; height: 22px; }
         .switch input { opacity: 0; width: 0; height: 0; }
@@ -125,177 +104,109 @@
         input:checked + .slider { background-color: var(--primary); }
         input:checked + .slider:before { transform: translateX(23px); }
 
-        /* --- Doctor Grid & Cards --- */
+        /* --- Doctor Grid --- */
         .grid-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 20px;
-            padding: 10px 20px 100px;
-            max-width: 1200px;
-            margin: 0 auto;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px; padding: 10px 20px 100px; max-width: 1200px; margin: 0 auto;
         }
 
         .card {
-            background: var(--card-bg);
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 4px 12px var(--shadow);
-            display: flex;
-            flex-direction: column;
-            position: relative;
+            background: var(--card-bg); border-radius: 12px; padding: 20px;
+            box-shadow: 0 4px 12px var(--shadow); display: flex; flex-direction: column;
         }
 
-        .card-name { font-size: 1.15rem; font-weight: 700; color: var(--text-main); margin-bottom: 8px; }
-        .card-qualification { font-weight: 400; color: var(--text-muted); font-size: 0.9rem; }
+        .card-name { font-size: 1.1rem; font-weight: 700; color: var(--text-main); margin-bottom: 8px; }
+        .card-qualification { font-weight: 400; color: var(--text-muted); font-size: 0.85rem; }
 
         .badge-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 15px; }
         .badge {
-            background: var(--accent-light);
-            color: var(--primary);
-            font-size: 0.75rem;
-            padding: 4px 12px;
-            border-radius: 50px;
-            font-weight: 600;
+            background: var(--accent-light); color: var(--primary);
+            font-size: 0.7rem; padding: 4px 12px; border-radius: 50px; font-weight: 600;
         }
-
-        .hospital-name { font-size: 0.95rem; font-weight: 600; margin-bottom: 12px; }
 
         .timing-row { margin-bottom: 8px; font-size: 0.85rem; }
         .timing-label { font-size: 0.65rem; text-transform: uppercase; font-weight: 700; color: var(--text-muted); display: block; }
-        .timing-val { font-weight: 500; display: block; }
-
+        
         .remarks-text {
-            font-style: italic;
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            margin: 10px 0;
-            padding: 8px;
-            border-left: 3px solid var(--primary);
-            background: rgba(0,0,0,0.02);
+            font-style: italic; font-size: 0.8rem; color: var(--text-muted);
+            margin: 10px 0; padding: 8px; border-left: 3px solid var(--primary); background: rgba(0,0,0,0.02);
         }
-
-        .contributed-by { font-size: 0.7rem; color: #aaa; margin-top: auto; padding-top: 15px; text-align: right; }
 
         .nav-btn {
-            background: var(--primary);
-            color: white;
-            text-align: center;
-            padding: 10px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-top: 15px;
+            background: var(--primary); color: white; text-align: center;
+            padding: 10px; border-radius: 8px; text-decoration: none;
+            font-size: 0.9rem; font-weight: 600; margin-top: 15px;
         }
 
-        /* --- Floating Filter & Modal --- */
+        /* --- Dual FAB System --- */
         .fab {
-            position: fixed;
-            bottom: 25px; right: 25px;
-            width: 56px; height: 56px;
-            background: var(--primary);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            border: none; cursor: pointer; z-index: 500;
+            position: fixed; bottom: 25px; width: auto; height: 50px;
+            color: white; border-radius: 25px; display: flex; align-items: center;
+            justify-content: center; padding: 0 20px; font-weight: 700; font-size: 0.9rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3); border: none; cursor: pointer; z-index: 900;
         }
 
-        .filter-modal {
-            position: fixed;
-            bottom: -100%; left: 0;
-            width: 100%; height: 70vh;
-            background: var(--card-bg);
-            z-index: 1100;
-            border-top-left-radius: 25px;
-            border-top-right-radius: 25px;
-            transition: 0.4s ease;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 -5px 25px rgba(0,0,0,0.2);
+        .fab-left { left: 20px; background: var(--success); } /* Add Doctor */
+        .fab-right { right: 20px; background: var(--primary); } /* Filter */
+
+        /* --- Modals & Forms --- */
+        .modal {
+            position: fixed; bottom: -100%; left: 0; width: 100%; height: 85vh;
+            background: var(--card-bg); z-index: 1100; border-top-left-radius: 25px;
+            border-top-right-radius: 25px; transition: 0.4s ease; display: flex;
+            flex-direction: column; box-shadow: 0 -5px 25px rgba(0,0,0,0.2);
+        }
+        .modal.active { bottom: 0; }
+
+        .modal-header {
+            padding: 20px; display: flex; justify-content: space-between;
+            align-items: center; border-bottom: 1px solid var(--border);
         }
 
-        .filter-modal.active { bottom: 0; }
+        .modal-body { flex: 1; overflow-y: auto; padding: 20px; }
 
-        .filter-header {
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .filter-body {
-            flex: 1;
-            display: flex;
-            overflow: hidden;
-        }
-
-        .filter-tabs {
-            width: 35%;
-            background: var(--bg);
-            border-right: 1px solid var(--border);
-        }
-
+        /* Filter Column Layout */
+        .filter-body { display: flex; height: 100%; overflow: hidden; }
+        .filter-tabs { width: 35%; background: var(--bg); border-right: 1px solid var(--border); }
         .filter-tab-btn {
-            width: 100%; padding: 15px;
-            border: none; background: none;
-            text-align: left; font-weight: 600;
-            color: var(--text-muted); cursor: pointer;
+            width: 100%; padding: 15px; border: none; background: none;
+            text-align: left; font-weight: 600; color: var(--text-muted); cursor: pointer;
+        }
+        .filter-tab-btn.active { background: var(--card-bg); color: var(--primary); border-left: 4px solid var(--primary); }
+        .filter-content { width: 65%; padding: 20px; overflow-y: auto; }
+
+        .form-group { margin-bottom: 15px; }
+        .form-group label { font-size: 0.75rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 5px; }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border);
+            background: var(--bg); color: var(--text-main); font-family: inherit;
         }
 
-        .filter-tab-btn.active {
-            background: var(--card-bg);
-            color: var(--primary);
-            border-left: 4px solid var(--primary);
-        }
+        .btn-submit { width: 100%; background: var(--success); color: white; border: none; padding: 15px; border-radius: 10px; font-weight: 700; cursor: pointer; }
+        .btn-apply { background: var(--primary); color: white; border: none; padding: 12px; border-radius: 8px; font-weight: 700; width: 100%; cursor: pointer; }
 
-        .filter-content {
-            width: 65%;
-            padding: 20px;
-            overflow-y: auto;
-        }
-
-        .filter-footer {
-            padding: 20px;
-            display: flex;
-            gap: 10px;
-            border-top: 1px solid var(--border);
-        }
-
-        .btn-apply { flex: 2; background: var(--primary); color: white; border: none; padding: 12px; border-radius: 8px; font-weight: 700; cursor: pointer; }
-        .btn-clear { flex: 1; background: var(--bg); color: var(--text-main); border: 1px solid var(--border); padding: 12px; border-radius: 8px; cursor: pointer; }
-
-        select {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 15px;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            background: var(--card-bg);
-            color: var(--text-main);
-        }
-
-        .spec-item {
-            padding: 10px; border-radius: 8px; cursor: pointer; border: 1px solid var(--border); margin-bottom: 8px; font-size: 0.9rem;
-        }
+        .spec-item { padding: 10px; border-radius: 8px; cursor: pointer; border: 1px solid var(--border); margin-bottom: 8px; font-size: 0.85rem; }
         .spec-item.selected { background: var(--primary); color: white; border-color: var(--primary); }
 
+        #toast {
+            visibility: hidden; min-width: 280px; background-color: #333; color: #fff;
+            text-align: center; border-radius: 10px; padding: 16px; position: fixed;
+            z-index: 2000; left: 50%; bottom: 100px; transform: translateX(-50%);
+        }
+        #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
+
+        @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 100px; opacity: 1;} }
+        @keyframes fadeout { from {bottom: 100px; opacity: 1;} to {bottom: 0; opacity: 0;} }
+
         @media (max-width: 480px) {
-            .filter-tabs { width: 40%; }
-            .filter-content { width: 60%; }
+            .grid-container { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Sidebar Overlay -->
+    <!-- Sidebar & Overlay -->
     <div class="sidebar-overlay" id="overlay" onclick="toggleSidebar(false)"></div>
-
-    <!-- Sidebar -->
     <nav id="sidebar">
         <button onclick="toggleSidebar(false)" style="float:right; border:none; background:none; font-size: 1.5rem; color:var(--text-muted)">&times;</button>
         <div class="sidebar-section" style="margin-top: 40px;">
@@ -304,7 +215,7 @@
         </div>
         <div class="sidebar-section">
             <h3>Contact Us</h3>
-            <p>Are you a medical practitioner? To update timings or request listing removal, contact the admin:</p>
+            <p>For practitioner updates or removals, contact admin:</p>
             <a href="mailto:support.findmydoctor@gmail.com">support.findmydoctor@gmail.com</a>
         </div>
         <div class="sidebar-section">
@@ -325,21 +236,47 @@
         <h1>Find my Doctor</h1>
     </header>
 
-    <!-- Search -->
+    <!-- Search Area -->
     <div class="search-wrapper">
-        <input type="text" id="searchInput" placeholder="Search by Name or Hospital...">
+        <input type="text" id="searchInput" placeholder="Search Doctor or Hospital...">
     </div>
 
-    <!-- Grid Container -->
+    <!-- Listings -->
     <main class="grid-container" id="doctorGrid"></main>
 
-    <!-- Floating Action Button for Filter -->
-    <button class="fab" onclick="toggleFilterModal(true)">🔍</button>
+    <!-- Balanced Bottom Navigation -->
+    <button class="fab fab-left" onclick="toggleAddModal(true)">+ Add Doctor</button>
+    <button class="fab fab-right" onclick="toggleFilterModal(true)">🔍 Filter</button>
 
-    <!-- Filter Modal -->
-    <div class="filter-modal" id="filterModal">
-        <div class="filter-header">
-            <h2 style="font-size: 1.1rem;">Search Filters</h2>
+    <!-- ADD DOCTOR MODAL -->
+    <div class="modal" id="addModal">
+        <div class="modal-header">
+            <h2 style="font-size: 1.1rem;">Submit New Doctor</h2>
+            <button onclick="toggleAddModal(false)" style="border:none; background:none; font-size: 1.5rem; color:var(--text-muted)">&times;</button>
+        </div>
+        <div class="modal-body">
+            <form id="contributeForm">
+                <div class="form-group"><label>CONTRIBUTOR NAME</label><input type="text" id="f_contributor" required></div>
+                <div class="form-group"><label>DOCTOR NAME</label><input type="text" id="f_name" required></div>
+                <div class="form-group"><label>SPECIALITY</label><input type="text" id="f_spec" required></div>
+                <div class="form-group"><label>CHAMBER / HOSPITAL</label><input type="text" id="f_hosp" required></div>
+                <div class="form-group"><label>QUALIFICATION</label><input type="text" id="f_qual"></div>
+                <div class="form-group"><label>STATE</label><input type="text" id="f_state" value="Assam" required></div>
+                <div class="form-group"><label>CITY / DISTRICT</label><input type="text" id="f_dist" required></div>
+                <div class="form-group"><label>LOCAL AREA</label><input type="text" id="f_area" required></div>
+                <div class="form-group"><label>PATIENT VISIT DAYS</label><input type="text" id="f_pDays" placeholder="e.g. Mon-Fri" required></div>
+                <div class="form-group"><label>MR VISIT DAYS</label><input type="text" id="f_mrDays" placeholder="e.g. Sat"></div>
+                <div class="form-group"><label>GOOGLE MAP LINK</label><input type="url" id="f_map" required></div>
+                <div class="form-group"><label>REMARKS</label><textarea id="f_remarks" rows="2"></textarea></div>
+                <button type="submit" id="submitBtn" class="btn-submit">Submit Data</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- FILTER MODAL -->
+    <div class="modal" id="filterModal">
+        <div class="modal-header">
+            <h2 style="font-size: 1.1rem;">Filters</h2>
             <button onclick="toggleFilterModal(false)" style="border:none; background:none; font-size: 1.5rem; color:var(--text-muted)">&times;</button>
         </div>
         <div class="filter-body">
@@ -348,62 +285,40 @@
                 <button class="filter-tab-btn" id="tabSpec" onclick="switchTab('spec')">Speciality</button>
             </div>
             <div class="filter-content" id="areaFilterContent">
-                <label style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted);">SELECT STATE</label>
-                <select id="stateSelect" onchange="updateDistrictDropdown()">
-                    <option value="">All States</option>
-                </select>
-                <label style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted);">SELECT CITY / DISTRICT</label>
-                <select id="districtSelect">
-                    <option value="">All Cities</option>
-                </select>
+                <label style="font-size: 0.7rem; font-weight: 700; color: var(--text-muted);">STATE</label>
+                <select id="stateSelect" onchange="updateDistrictDropdown()"><option value="">All States</option></select>
+                <label style="font-size: 0.7rem; font-weight: 700; color: var(--text-muted); margin-top: 15px; display: block;">CITY</label>
+                <select id="districtSelect"><option value="">All Cities</option></select>
             </div>
-            <div class="filter-content" id="specFilterContent" style="display: none;">
-                <div id="specialityList"></div>
-            </div>
+            <div class="filter-content" id="specFilterContent" style="display: none;"><div id="specialityList"></div></div>
         </div>
-        <div class="filter-footer">
-            <button class="btn-clear" onclick="clearFilters()">Clear</button>
-            <button class="btn-apply" onclick="applyFilters()">Apply Filters</button>
+        <div style="padding: 20px; display: flex; gap: 10px; border-top: 1px solid var(--border);">
+            <button style="flex: 1; padding: 12px; border: none; border-radius: 8px; background: var(--bg); color: var(--text-main);" onclick="clearFilters()">Clear</button>
+            <button style="flex: 2;" class="btn-apply" onclick="applyFilters()">Apply</button>
         </div>
     </div>
+
+    <div id="toast">Details submitted successfully!</div>
 
     <script>
         const SUBMISSION_URL = 'https://script.google.com/macros/s/AKfycbV4va8MHySYrWu6dR0FA4QDB3kqEKWN4rKbD8CQrIN0C4dxiryyXGtOXSgzP6HgUuaAg/exec';
 
-        // LATEST UPDATED DOCTOR DATA LIST
+        // Initial Local Data
         let doctorData = [
-            { name: "Dr. Anshuman Dutta", state: "Assam", district: "Guwahati", area: "Bhangagarh", speciality: "Orthopedic", qualification: "MBBS, MS", hospital: "Aruna Memorial Hospital", patientDays: "Mon-Sat", mrDays: "Tue & Sat", remarks: "MR call after patients visit", mapLink: "https://maps.app.goo.gl/3H7od5xJQhEbiHVDA?g_st=ac", contributedBy: "Admin" },
-            { name: "Dr. Daisy Dutta", state: "Assam", district: "Guwahati", area: "Bhangagarh", speciality: "Internet Medicine", qualification: "MBBS, MD", hospital: "Aruna Memorial Hospital", patientDays: "Mon-Sat", mrDays: "Tue & Sat", remarks: "MR call after patients visit", mapLink: "https://maps.app.goo.gl/3H7od5xJQhEbiHVDA?g_st=ac", contributedBy: "Admin" },
-            { name: "Dr. Manashi Barman", state: "Assam", district: "Guwahati", area: "Chenikuthi", speciality: "Internet Medicine", qualification: "MBBS, MD", hospital: "The Muskan Medical", patientDays: "Mon-Sat", mrDays: "Fri", remarks: "MR call after patients visit", mapLink: "https://maps.app.goo.gl/k5Lt72vg1kEhb1JeA?g_st=ac", contributedBy: "Admin" },
-            { name: "Dr. Sanjeev Kumar Bhuyan", state: "Assam", district: "Guwahati", area: "Chandmari", speciality: "Orthopedic", qualification: "MBBS, MS", hospital: "Medishade, Tulip Tower", patientDays: "Mon-Sat", mrDays: "Thr & Fri", remarks: "MR call after patients visit", mapLink: "https://maps.app.goo.gl/Fccez5iELffZUxSe6?g_st=ac", contributedBy: "Admin" },
-            { name: "Dr. H. C. Frank", state: "Assam", district: "Guwahati", area: "Christian Basti", speciality: "Orthopedic", qualification: "MBBS, MS", hospital: "MVD Health Plus", patientDays: "Mon-Sat", mrDays: "Mon-Sat", remarks: "Appointment required at chamber for MR visit. 4 MR visit per day", mapLink: "https://maps.app.goo.gl/5PGBM97xm7sRUJwf6?g_st=ac", contributedBy: "Admin" },
-            { name: "Dr. Sumon S. Saikia", state: "Assam", district: "Guwahati", area: "Zoo-Narengi Road", speciality: "Orthopedic", qualification: "MBBS, MS", hospital: "KGMT Multispeciality Hospital", patientDays: "Mon-Sat", mrDays: "Mon-Sat", remarks: "MR call after patients visit", mapLink: "https://maps.app.goo.gl/YbPbgJVmwZpGFwhH9?g_st=ac", contributedBy: "Admin" },
-            { name: "Dr. Chandana Sarma", state: "Assam", district: "Guwahati", area: "Geeta Nagar", speciality: "Internet Medicine", qualification: "MBBS, MD", hospital: "Samim Medicos", patientDays: "Mon-Sat", mrDays: "Mon-Sat", remarks: "Appointment required at chamber for MR visit. 2 MR visit per day", mapLink: "https://maps.app.goo.gl/ht9wgsQb25FrEGMf7?g_st=ac", contributedBy: "Admin" },
-            { name: "Dr. Kuldip Paul Chaudhary", state: "Assam", district: "Guwahati", area: "Zoo-Narengi Road", speciality: "Internal Medicine & Diabetology", qualification: "MBBS, MD", hospital: "KGMT Multispeciality Hospital", patientDays: "Mon-Sat", mrDays: "Tue-Sat", remarks: "MR call after patients visit", mapLink: "https://maps.app.goo.gl/gmUyrgRgzpCMXeh39", contributedBy: "Admin" },
-            { name: "Kajal Nayan Das", state: "Assam", district: "Guwahati", area: "Bhangagarh", speciality: "Surgeon", qualification: "MBBS, MS", hospital: "NEMCARE HOSPITAL", patientDays: "Mon-Sat", mrDays: "Tue, Thr & Sat", remarks: "Dr is very mobile must chase him for visit", mapLink: "https://maps.app.goo.gl/ZZgU4AhKjFrnG2uJ8?g_st=ac", contributedBy: "Brahmanand Jha" },
-            { name: "Paresh Sharma", state: "Assam", district: "Guwahati", area: "Bhangagarh", speciality: "Consultant Physician", qualification: "MBBS, MD", hospital: "Nemcare Hospital", patientDays: "Mon-Sat", mrDays: "Wed & Sat", remarks: "MR call after patients visit", mapLink: "https://maps.app.goo.gl/kXaMnVwEkfvzWrmp8?g_st=ac", contributedBy: "Brahmanand Jha" },
-            { name: "Jayanta Hazarika", state: "Assam", district: "Guwahati", area: "Zoo-Narengi Road", speciality: "Surgeon", qualification: "MBBS, MS", hospital: "KGMT Multispeciality Hospital", patientDays: "Mon-Sat", mrDays: "Mon-Sat", remarks: "MR call after patients visit", mapLink: "https://maps.app.goo.gl/TyXQiVuWmi7efect7", contributedBy: "Admin" }
+            { name: "Dr. Anshuman Dutta", state: "Assam", district: "Guwahati", area: "Bhangagarh", speciality: "Orthopedic", qualification: "MBBS, MS", hospital: "Aruna Memorial Hospital", patientDays: "Mon-Sat", mrDays: "Tue & Sat", remarks: "MR call after patients visit", mapLink: "https://maps.app.goo.gl/3H7od5xJQhEbiHVDA?g_st=ac", Contributor: "Admin" },
+            { name: "Dr. Daisy Dutta", state: "Assam", district: "Guwahati", area: "Bhangagarh", speciality: "Internet Medicine", qualification: "MBBS, MD", hospital: "Aruna Memorial Hospital", patientDays: "Mon-Sat", mrDays: "Tue & Sat", remarks: "MR call after patients visit", mapLink: "https://maps.app.goo.gl/3H7od5xJQhEbiHVDA?g_st=ac", Contributor: "Admin" },
+            { name: "Dr. Sanjeev Kumar Bhuyan", state: "Assam", district: "Guwahati", area: "Chandmari", speciality: "Orthopedic", qualification: "MBBS, MS", hospital: "Medishade, Tulip Tower", patientDays: "Mon-Sat", mrDays: "Thr & Fri", remarks: "MR call after patients visit", mapLink: "https://maps.app.goo.gl/Fccez5iELffZUxSe6?g_st=ac", Contributor: "Admin" },
+            { name: "Paresh Sharma", state: "Assam", district: "Guwahati", area: "Bhangagarh", speciality: "Consultant Physician", qualification: "MBBS, MD", hospital: "Nemcare Hospital", patientDays: "Mon-Sat", mrDays: "Wed & Sat", remarks: "MR call after patients visit", mapLink: "https://maps.app.goo.gl/kXaMnVwEkfvzWrmp8?g_st=ac", Contributor: "Brahmanand Jha" },
+            { name: "Jayanta Hazarika", state: "Assam", district: "Guwahati", area: "Zoo-Narengi Road", speciality: "Surgeon", qualification: "MBBS, MS", hospital: "KGMT Multispeciality Hospital", patientDays: "Mon-Sat", mrDays: "Mon-Sat", remarks: "MR call after patients visit", mapLink: "https://maps.app.goo.gl/TyXQiVuWmi7efect7", Contributor: "Admin" }
         ];
 
         let selectedSpeciality = "";
 
-        // --- Sidebar & Theme Logic ---
-        function toggleSidebar(active) {
-            document.getElementById('sidebar').classList.toggle('active', active);
-            document.getElementById('overlay').style.display = active ? 'block' : 'none';
-        }
-
-        function toggleDarkTheme() {
-            const isDark = document.getElementById('darkToggle').checked;
-            document.body.classList.toggle('dark-theme', isDark);
-            localStorage.setItem('darkMode', isDark);
-        }
-
-        // --- Filter Modal Logic ---
-        function toggleFilterModal(active) {
-            document.getElementById('filterModal').classList.toggle('active', active);
-        }
-
+        // UI Helpers
+        function toggleSidebar(active) { document.getElementById('sidebar').classList.toggle('active', active); document.getElementById('overlay').style.display = active ? 'block' : 'none'; }
+        function toggleDarkTheme() { const isDark = document.getElementById('darkToggle').checked; document.body.classList.toggle('dark-theme', isDark); localStorage.setItem('darkMode', isDark); }
+        function toggleAddModal(active) { document.getElementById('addModal').classList.toggle('active', active); }
+        function toggleFilterModal(active) { document.getElementById('filterModal').classList.toggle('active', active); }
         function switchTab(tab) {
             document.getElementById('tabArea').classList.toggle('active', tab === 'area');
             document.getElementById('tabSpec').classList.toggle('active', tab === 'spec');
@@ -411,7 +326,7 @@
             document.getElementById('specFilterContent').style.display = tab === 'spec' ? 'block' : 'none';
         }
 
-        // --- Data Handling for Filters ---
+        // Filtering
         function initFilters() {
             const states = [...new Set(doctorData.map(d => d.state))];
             const stateSelect = document.getElementById('stateSelect');
@@ -420,17 +335,10 @@
             const specs = [...new Set(doctorData.map(d => d.speciality))];
             const specList = document.getElementById('specialityList');
             specs.forEach(s => {
-                if(s) {
-                    let div = document.createElement('div');
-                    div.className = 'spec-item';
-                    div.innerText = s;
-                    div.onclick = () => {
-                        document.querySelectorAll('.spec-item').forEach(el => el.classList.remove('selected'));
-                        div.classList.add('selected');
-                        selectedSpeciality = s;
-                    };
-                    specList.appendChild(div);
-                }
+                let div = document.createElement('div');
+                div.className = 'spec-item'; div.innerText = s;
+                div.onclick = () => { document.querySelectorAll('.spec-item').forEach(el => el.classList.remove('selected')); div.classList.add('selected'); selectedSpeciality = s; };
+                specList.appendChild(div);
             });
         }
 
@@ -445,71 +353,83 @@
         function applyFilters() {
             const state = document.getElementById('stateSelect').value;
             const district = document.getElementById('districtSelect').value;
-            const filtered = doctorData.filter(doc => {
-                return (!state || doc.state === state) && 
-                       (!district || doc.district === district) && 
-                       (!selectedSpeciality || doc.speciality === selectedSpeciality);
-            });
+            const filtered = doctorData.filter(doc => (!state || doc.state === state) && (!district || doc.district === district) && (!selectedSpeciality || doc.speciality === selectedSpeciality));
             renderCards(filtered);
             toggleFilterModal(false);
         }
 
         function clearFilters() {
-            document.getElementById('stateSelect').value = "";
-            document.getElementById('districtSelect').innerHTML = '<option value="">All Cities</option>';
+            document.getElementById('stateSelect').value = ""; document.getElementById('districtSelect').innerHTML = '<option value="">All Cities</option>';
             document.querySelectorAll('.spec-item').forEach(el => el.classList.remove('selected'));
-            selectedSpeciality = "";
-            renderCards(doctorData);
-            toggleFilterModal(false);
+            selectedSpeciality = ""; renderCards(doctorData); toggleFilterModal(false);
         }
 
-        // --- Rendering Logic ---
+        // Card Rendering
         function renderCards(data) {
             const grid = document.getElementById('doctorGrid');
             grid.innerHTML = "";
-            if(data.length === 0) {
-                grid.innerHTML = `<p style="grid-column:1/-1; text-align:center; padding:50px; color:var(--text-muted)">No doctors found.</p>`;
-                return;
-            }
             data.forEach(doc => {
                 const card = document.createElement('div');
                 card.className = "card";
                 card.innerHTML = `
                     <div class="card-name">${doc.name} <span class="card-qualification">- ${doc.qualification}</span></div>
-                    <div class="badge-row">
-                        <span class="badge">${doc.speciality}</span>
-                        <span class="badge" style="background:var(--border); color:var(--text-main);">📍 ${doc.area}</span>
-                    </div>
-                    <div class="hospital-name">🏥 ${doc.hospital}</div>
-                    <div class="timing-row">
-                        <span class="timing-label">Patient Visit Days</span>
-                        <span class="timing-val">${doc.patientDays}</span>
-                    </div>
-                    <div class="timing-row">
-                        <span class="timing-label">MR Visit Days</span>
-                        <span class="timing-val" style="color:#d9534f">${doc.mrDays}</span>
-                    </div>
+                    <div class="badge-row"><span class="badge">${doc.speciality}</span><span class="badge" style="background:var(--border); color:var(--text-main);">📍 ${doc.area}</span></div>
+                    <div style="font-size:0.9rem; font-weight:600; margin-bottom:12px;">🏥 ${doc.hospital}</div>
+                    <div class="timing-row"><span class="timing-label">Patient Days</span><span class="timing-val">${doc.patientDays}</span></div>
+                    <div class="timing-row"><span class="timing-label">MR Visit Days</span><span class="timing-val" style="color:#d9534f">${doc.mrDays}</span></div>
                     ${doc.remarks ? `<div class="remarks-text">${doc.remarks}</div>` : ''}
-                    <div class="contributed-by">Contributed By: ${doc.contributedBy || 'Admin'}</div>
-                    <a href="${doc.mapLink}" target="_blank" class="nav-btn">Navigate on Google Maps</a>
+                    <div style="font-size:0.65rem; color:#aaa; text-align:right; margin-top:10px;">By: ${doc.Contributor || 'Admin'}</div>
+                    <a href="${doc.mapLink}" target="_blank" class="nav-btn">Google Maps</a>
                 `;
                 grid.appendChild(card);
             });
         }
 
+        // Search
         document.getElementById('searchInput').addEventListener('input', (e) => {
             const term = e.target.value.toLowerCase();
             const filtered = doctorData.filter(d => d.name.toLowerCase().includes(term) || d.hospital.toLowerCase().includes(term));
             renderCards(filtered);
         });
 
+        // Form Submission
+        document.getElementById('contributeForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = true; btn.innerText = "Submitting...";
+
+            const payload = {
+                timestamp: new Date().toLocaleString(),
+                state: document.getElementById('f_state').value,
+                district: document.getElementById('f_dist').value,
+                doctor: document.getElementById('f_name').value,
+                area: document.getElementById('f_area').value,
+                speciality: document.getElementById('f_spec').value,
+                qualification: document.getElementById('f_qual').value,
+                hospital: document.getElementById('f_hosp').value,
+                patientDays: document.getElementById('f_pDays').value,
+                mrDays: document.getElementById('f_mrDays').value,
+                remarks: document.getElementById('f_remarks').value,
+                mapLink: document.getElementById('f_map').value,
+                Contributor: document.getElementById('f_contributor').value
+            };
+
+            fetch(SUBMISSION_URL, {
+                method: 'POST', mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            }).then(() => {
+                toggleAddModal(false);
+                const t = document.getElementById("toast"); t.className = "show";
+                setTimeout(() => { t.className = ""; }, 3000);
+                this.reset();
+            }).catch(() => { alert("Error submitting data."); })
+            .finally(() => { btn.disabled = false; btn.innerText = "Submit Data"; });
+        });
+
         window.onload = () => {
-            if(localStorage.getItem('darkMode') === 'true') {
-                document.getElementById('darkToggle').checked = true;
-                document.body.classList.add('dark-theme');
-            }
-            initFilters();
-            renderCards(doctorData);
+            if(localStorage.getItem('darkMode') === 'true') { document.getElementById('darkToggle').checked = true; document.body.classList.add('dark-theme'); }
+            initFilters(); renderCards(doctorData);
         };
     </script>
 </body>
