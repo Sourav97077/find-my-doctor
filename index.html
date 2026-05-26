@@ -290,7 +290,7 @@
             transform: translateX(24px);
         }
 
-        /* Main Directory Grid Content */
+        /* Main Grid Directory View */
         main {
             flex: 1;
             padding: 2rem 1.5rem 6rem 1.5rem;
@@ -570,6 +570,38 @@
 
         .map-btn-full:hover {
             background-color: #0056b3;
+        }
+
+        /* GPS Input Wrapper styling */
+        .gps-input-container {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            width: 100%;
+        }
+
+        .gps-btn {
+            background-color: var(--primary-color);
+            color: #ffffff;
+            border: none;
+            padding: 10px 14px;
+            border-radius: var(--radius-md);
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: background-color 0.2s ease;
+        }
+
+        .gps-btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        @media (max-width: 500px) {
+            .gps-input-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
         }
 
         /* FLOATING ACTION BUTTONS (FAB) */
@@ -968,7 +1000,10 @@
                         </div>
                         <div class="form-group">
                             <label for="in_map">Google Map Link *</label>
-                            <input type="url" id="in_map" required placeholder="https://maps.google.com/...">
+                            <div class="gps-input-container">
+                                <input type="url" id="in_map" required placeholder="https://maps.google.com/...">
+                                <button type="button" id="get-gps-btn" class="gps-btn">📍 Get Current Location</button>
+                            </div>
                         </div>
                         <div class="form-group span-2">
                             <label for="in_contributor">Contributed By *</label>
@@ -1126,6 +1161,36 @@
                 applyCurrentFilters();
                 closeFilterModal();
             });
+
+            // Geolocation Fetch Event Listener
+            const gpsBtn = document.getElementById("get-gps-btn");
+            if (gpsBtn) {
+                gpsBtn.addEventListener("click", () => {
+                    if (navigator.geolocation) {
+                        gpsBtn.innerText = "🔄 Locating...";
+                        gpsBtn.disabled = true;
+                        navigator.geolocation.getCurrentPosition(
+                            (position) => {
+                                const lat = position.coords.latitude;
+                                const lng = position.coords.longitude;
+                                const mapUrl = `https://www.google.com/maps?q=${lat},${lng}`;
+                                document.getElementById("in_map").value = mapUrl;
+                                gpsBtn.innerText = "📍 Get Current Location";
+                                gpsBtn.disabled = false;
+                            },
+                            (error) => {
+                                console.error("Geolocation error:", error);
+                                alert("Unable to retrieve your location. Please ensure location access is granted or enter the link manually.");
+                                gpsBtn.innerText = "📍 Get Current Location";
+                                gpsBtn.disabled = false;
+                            },
+                            { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+                        );
+                    } else {
+                        alert("Geolocation is not supported by your browser.");
+                    }
+                });
+            }
         }
 
         // REST Core Handshake System
