@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Find My Doctor Directory</title>
+    <title>Medsfinder Directory</title>
     <style>
         /* CSS Root Variables for Themes */
         :root {
@@ -299,7 +299,7 @@
             margin: 0 auto;
         }
 
-        /* Search input container with prominent mobile background formatting */
+        /* Search input box clearly visible on desktop and mobile */
         .search-container {
             background-color: var(--card-bg);
             border: 2px solid var(--border-color);
@@ -422,6 +422,11 @@
             border-left: 4px solid var(--primary-color);
             border-radius: var(--radius-md);
             padding: 12px 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: nowrap; /* Pinned horizontally on the same line */
         }
 
         body.dark-mode .doctor-name-highlight {
@@ -433,6 +438,37 @@
             font-weight: 700;
             color: var(--text-color);
             line-height: 1.3;
+            word-break: break-word;
+        }
+
+        /* Pinned high-contrast Update action button styling */
+        .suggest-edit-btn {
+            background: none;
+            border: none;
+            color: #007bff;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            padding: 6px 12px;
+            border-radius: 6px;
+            background-color: rgba(0, 123, 255, 0.08);
+            white-space: nowrap;
+            flex-shrink: 0;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        body.dark-mode .suggest-edit-btn {
+            color: #38bdf8;
+            background-color: rgba(56, 189, 248, 0.12);
+        }
+
+        .suggest-edit-btn:hover {
+            background-color: rgba(0, 123, 255, 0.15);
+        }
+
+        body.dark-mode .suggest-edit-btn:hover {
+            background-color: rgba(56, 189, 248, 0.2);
         }
 
         .doctor-spec {
@@ -811,7 +847,7 @@
     <!-- Full-Screen CSS Animated Loader Ring -->
     <div id="loading-screen">
         <div class="spinner"></div>
-        <div class="loader-text">Syncing with live database...</div>
+        <div class="loader-text">Loading Doctors List...</div>
     </div>
 
     <!-- Main Site Navigation Bar -->
@@ -822,7 +858,7 @@
                 <span></span>
                 <span></span>
             </button>
-            <span class="app-title">Find My Doctor</span>
+            <span class="app-title">Medsfinder</span>
         </div>
     </header>
 
@@ -1047,7 +1083,22 @@
             const closeAddBtn = document.getElementById("close-add-modal-btn");
             const cancelAddBtn = document.getElementById("cancel-add-modal-btn");
 
-            const openAddModal = () => addModal.classList.add("open");
+            const openAddModal = () => {
+                // Ensure default modal state
+                const modalHeaderTitle = addModal.querySelector(".modal-header h3");
+                if (modalHeaderTitle) {
+                    modalHeaderTitle.innerText = "Add New Doctor";
+                }
+                
+                const nameInput = document.getElementById('in_name');
+                nameInput.readOnly = false;
+                nameInput.style.backgroundColor = "";
+                nameInput.style.cursor = "";
+
+                addModal.classList.add("open");
+                document.getElementById("add-doctor-form").reset();
+            };
+
             const closeAddModal = () => {
                 addModal.classList.remove("open");
                 document.getElementById("add-doctor-form").reset();
@@ -1101,10 +1152,49 @@
             applyCurrentFilters();
         }
 
+        // Edit Mode Form pre-population handler
+        function handleSuggestEdit(index) {
+            const doc = window.currentRenderedDoctors[index];
+            if (!doc) return;
+
+            const addModal = document.getElementById("add-doctor-modal");
+            
+            // Adjust header context
+            const modalHeaderTitle = addModal.querySelector(".modal-header h3");
+            if (modalHeaderTitle) {
+                modalHeaderTitle.innerText = "Suggest Doctor Edit";
+            }
+
+            // Lock Name field to preserve master identity rows
+            const nameInput = document.getElementById('in_name');
+            nameInput.readOnly = true;
+            nameInput.style.backgroundColor = "var(--bg-color)";
+            nameInput.style.cursor = "not-allowed";
+
+            // Prefill standard inputs
+            document.getElementById('in_state').value = doc.state || '';
+            document.getElementById('in_dist_city').value = doc.district || '';
+            document.getElementById('in_name').value = doc.name || '';
+            document.getElementById('in_area').value = doc.area || '';
+            document.getElementById('in_spec').value = doc.speciality || '';
+            document.getElementById('in_qual').value = doc.qualification || '';
+            document.getElementById('in_hosp').value = doc.hospital || '';
+            document.getElementById('in_pDays').value = doc.patientDays || '';
+            document.getElementById('in_mrDays').value = doc.mrDays || '';
+            document.getElementById('in_remarks').value = doc.remarks || '';
+            document.getElementById('in_map').value = doc.mapLink || '';
+            document.getElementById('in_contributor').value = doc.contributedBy || '';
+
+            addModal.classList.add("open");
+        }
+
         // Render Doctor Database Output
         function renderCards(doctorsList) {
             const gridContainer = document.getElementById("doctors-grid");
             gridContainer.innerHTML = "";
+
+            // Expose listings references scope cleanly to click events
+            window.currentRenderedDoctors = doctorsList;
 
             if (!doctorsList || doctorsList.length === 0) {
                 gridContainer.innerHTML = `
@@ -1115,7 +1205,7 @@
                 return;
             }
 
-            doctorsList.forEach(doc => {
+            doctorsList.forEach((doc, index) => {
                 const card = document.createElement("div");
                 card.className = "doctor-card";
 
@@ -1123,6 +1213,7 @@
                 const nameHTML = (doc.name && doc.name.trim() !== "") ? `
                     <div class="doctor-name-highlight">
                         <h4 class="doctor-name">${doc.name}</h4>
+                        <button class="suggest-edit-btn" onclick="handleSuggestEdit(${index})">Update</button>
                     </div>` : '';
 
                 const specHTML = (doc.speciality && doc.speciality.trim() !== "") ? `
@@ -1192,7 +1283,7 @@
             });
         }
 
-        // Add Doctor Form Handling
+        // Add/Edit Doctor Form Submission Handling
         async function handleDoctorSubmit(event) {
             event.preventDefault();
             
