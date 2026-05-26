@@ -13,11 +13,11 @@
             --card-bg: #ffffff;
             --text-color: #1e293b;
             --text-secondary: #64748b;
-            --border-color: #e2e8f0;
+            --border-color: #cbd5e1; /* Crisp outline borders */
             --sidebar-bg: #ffffff;
             --modal-bg: #ffffff;
-            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 16px -6px rgba(0, 0, 0, 0.1); /* Pronounced drop-shadow */
+            --shadow-lg: 0 20px 35px -5px rgba(0, 0, 0, 0.15), 0 12px 24px -10px rgba(0, 0, 0, 0.15);
             --radius-md: 12px;
             --radius-lg: 16px;
             --header-gradient: linear-gradient(135deg, #0284c7 0%, #0d9488 100%);
@@ -31,11 +31,11 @@
             --card-bg: #1e293b;
             --text-color: #f8fafc;
             --text-secondary: #94a3b8;
-            --border-color: #334155;
+            --border-color: #334155; /* Crisp outline borders in dark mode */
             --sidebar-bg: #1e293b;
             --modal-bg: #1e293b;
-            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.5);
-            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.5);
+            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 16px -6px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 20px 35px -5px rgba(0, 0, 0, 0.5), 0 12px 24px -10px rgba(0, 0, 0, 0.5);
             --header-gradient: linear-gradient(135deg, #38bdf8 0%, #2dd4bf 100%);
         }
 
@@ -105,7 +105,7 @@
         /* Header Styles */
         header {
             background-color: var(--card-bg);
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 1.5px solid var(--border-color);
             padding: 1rem 1.5rem;
             position: sticky;
             top: 0;
@@ -234,7 +234,7 @@
             text-decoration: underline;
         }
 
-        /* Dark Mode Toggle Switch */
+        /* Dark Mode Toggle Switch Container */
         .toggle-container {
             display: flex;
             align-items: center;
@@ -242,7 +242,7 @@
             background: var(--bg-color);
             padding: 12px;
             border-radius: var(--radius-md);
-            margin-top: auto;
+            border: 1px solid var(--border-color);
         }
 
         .toggle-label {
@@ -299,6 +299,45 @@
             margin: 0 auto;
         }
 
+        /* Search input container with prominent mobile background formatting */
+        .search-container {
+            background-color: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            padding: 2px 14px;
+            margin-bottom: 2rem;
+            width: 100%;
+        }
+
+        .search-container:focus-within {
+            border-color: var(--primary-color);
+        }
+
+        .search-icon {
+            color: var(--text-secondary);
+            font-size: 1.15rem;
+            margin-right: 8px;
+        }
+
+        #search-input {
+            background: transparent;
+            border: none;
+            padding: 14px 4px;
+            font-size: 1rem;
+            color: var(--text-color);
+            width: 100%;
+            outline: none;
+            font-weight: 500;
+        }
+
+        #search-input::placeholder {
+            color: var(--text-secondary);
+            opacity: 0.8;
+        }
+
         /* Active Filters Banner */
         .active-filters-bar {
             background-color: var(--card-bg);
@@ -332,7 +371,7 @@
         .grid-container {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 1.5rem;
+            gap: 1.75rem;
         }
 
         /* Empty State */
@@ -350,23 +389,31 @@
             margin-bottom: 1rem;
         }
 
-        /* Professional Doctor Profile Card */
+        /* Professional Doctor Profile Card - CRISP lines & PRONOUNCED drop-shadow */
         .doctor-card {
             background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
+            border: 1.5px solid var(--border-color);
             border-radius: var(--radius-lg);
-            padding: 1.5rem;
             box-shadow: var(--shadow);
-            position: relative;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            overflow: hidden;
+            height: 100%;
         }
 
         .doctor-card:hover {
             box-shadow: var(--shadow-lg);
-            transform: translateY(-2px);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            transform: translateY(-4px);
+            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+        }
+
+        /* Balanced Inner Padding Container */
+        .card-content {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            flex-grow: 1;
         }
 
         /* Card Elements Restructure Styles */
@@ -375,7 +422,6 @@
             border-left: 4px solid var(--primary-color);
             border-radius: var(--radius-md);
             padding: 12px 14px;
-            margin-bottom: 4px;
         }
 
         body.dark-mode .doctor-name-highlight {
@@ -410,8 +456,7 @@
             display: flex;
             align-items: center;
             gap: 6px;
-            margin-top: 4px;
-            margin-bottom: 2px;
+            margin-top: 2px;
         }
 
         .card-details-container {
@@ -447,20 +492,21 @@
             margin: 4px 0;
         }
 
+        /* Custom Curved-border quotes box for MR Remarks */
         .remarks-block {
             font-size: 0.85rem;
             background-color: var(--bg-color);
-            padding: 10px;
-            border-radius: var(--radius-md);
-            border-left: 3px solid var(--primary-color);
+            padding: 12px 14px;
+            border-radius: 12px;
+            border-top-left-radius: 0px;
+            border-left: 4px solid var(--primary-color);
             line-height: 1.4;
+            position: relative;
+            font-style: italic;
         }
 
-        .card-footer {
+        .card-meta {
             margin-top: auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
             padding-top: 10px;
         }
 
@@ -469,23 +515,25 @@
             color: var(--text-secondary);
         }
 
-        .map-btn {
-            background-color: var(--primary-color);
+        /* Full-Width Google Maps bottom button spanning bottom margin */
+        .map-btn-full {
+            background-color: #007bff;
             color: #ffffff;
             border: none;
-            padding: 8px 14px;
-            border-radius: var(--radius-md);
-            font-size: 0.85rem;
-            font-weight: 600;
-            cursor: pointer;
+            padding: 14px;
+            text-align: center;
             text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
+            display: block;
+            width: 100%;
+            font-size: 0.95rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: auto;
         }
 
-        .map-btn:hover {
-            background-color: var(--primary-hover);
+        .map-btn-full:hover {
+            background-color: #0056b3;
         }
 
         /* FLOATING ACTION BUTTONS (FAB) */
@@ -795,19 +843,26 @@
             <h3>Contact Us</h3>
             <p>For support requests or directory disputes, please contact our administrative team directly at:</p>
             <a href="mailto:support.findmydoctor@gmail.com" class="sidebar-link">support.findmydoctor@gmail.com</a>
-        </div>
-
-        <div class="toggle-container">
-            <span class="toggle-label">Dark Mode</span>
-            <label class="switch">
-                <input type="checkbox" id="theme-toggle-chk">
-                <span class="slider"></span>
-            </label>
+            
+            <!-- Dark Mode Switch container moved beneath contact options -->
+            <div class="toggle-container" style="margin-top: 1.5rem;">
+                <span class="toggle-label">Dark Mode</span>
+                <label class="switch">
+                    <input type="checkbox" id="theme-toggle-chk">
+                    <span class="slider"></span>
+                </label>
+            </div>
         </div>
     </aside>
 
     <!-- Main Grid Directory View -->
     <main>
+        <!-- Search input box clearly visible on desktop and mobile -->
+        <div class="search-container">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="search-input" placeholder="Search by name, specialty, hospital, or city..." oninput="handleSearch(this.value)">
+        </div>
+
         <!-- Filter Info Bar -->
         <div class="active-filters-bar" id="active-filters-banner">
             <div class="active-filters-info" id="active-filters-text">
@@ -931,6 +986,7 @@
         let filteredState = "";
         let filteredDistrict = "";
         let filteredSpeciality = "";
+        let searchQuery = "";
         
         // Tab system settings
         let activeTab = "area"; // "area" or "speciality"
@@ -1039,6 +1095,12 @@
             }
         }
 
+        // Real-time Text Search Logic
+        function handleSearch(query) {
+            searchQuery = query.toLowerCase().trim();
+            applyCurrentFilters();
+        }
+
         // Render Doctor Database Output
         function renderCards(doctorsList) {
             const gridContainer = document.getElementById("doctors-grid");
@@ -1048,7 +1110,7 @@
                 gridContainer.innerHTML = `
                     <div class="empty-state">
                         <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                        <p>No medical specialists match your selected search area.</p>
+                        <p>No medical specialists match your search criteria.</p>
                     </div>`;
                 return;
             }
@@ -1099,30 +1161,32 @@
 
                 const remarksHTML = (doc.remarks && doc.remarks.trim() !== "") ? `
                     <div class="remarks-block">
-                        <strong>Notes:</strong> ${doc.remarks}
+                        ${doc.remarks}
                     </div>` : '';
 
                 card.innerHTML = `
-                    ${nameHTML}
-                    <div class="card-details-container">
-                        ${specHTML}
-                        ${qualHTML}
-                        ${areaHTML}
+                    <div class="card-content">
+                        ${nameHTML}
+                        <div class="card-details-container">
+                            ${specHTML}
+                            ${qualHTML}
+                            ${areaHTML}
+                            
+                            <div class="card-divider"></div>
+                            
+                            ${hospitalHTML}
+                            ${locationHTML}
+                            ${patientDaysHTML}
+                            ${mrDaysHTML}
+                            
+                            ${remarksHTML}
+                        </div>
                         
-                        <div class="card-divider"></div>
-                        
-                        ${hospitalHTML}
-                        ${locationHTML}
-                        ${patientDaysHTML}
-                        ${mrDaysHTML}
-                        
-                        ${remarksHTML}
+                        <div class="card-meta">
+                            <span class="contributor-tag">Added by ${doc.contributedBy || 'Anonymous'}</span>
+                        </div>
                     </div>
-                    
-                    <div class="card-footer">
-                        <span class="contributor-tag">Added by ${doc.contributedBy || 'Anonymous'}</span>
-                        <a class="map-btn" href="${doc.mapLink}" target="_blank" rel="noopener noreferrer">📍 Map Link</a>
-                    </div>
+                    <a class="map-btn-full" href="${doc.mapLink}" target="_blank" rel="noopener noreferrer">Google Maps</a>
                 `;
                 gridContainer.appendChild(card);
             });
@@ -1286,6 +1350,16 @@
             if (filteredSpeciality) {
                 matchedListings = matchedListings.filter(d => d.speciality === filteredSpeciality);
             }
+            if (searchQuery) {
+                matchedListings = matchedListings.filter(d => 
+                    (d.name && d.name.toLowerCase().includes(searchQuery)) ||
+                    (d.hospital && d.hospital.toLowerCase().includes(searchQuery)) ||
+                    (d.area && d.area.toLowerCase().includes(searchQuery)) ||
+                    (d.speciality && d.speciality.toLowerCase().includes(searchQuery)) ||
+                    (d.district && d.district.toLowerCase().includes(searchQuery)) ||
+                    (d.state && d.state.toLowerCase().includes(searchQuery))
+                );
+            }
 
             // Render Output Cards
             renderCards(matchedListings);
@@ -1316,6 +1390,10 @@
             filteredState = "";
             filteredDistrict = "";
             filteredSpeciality = "";
+            searchQuery = "";
+            
+            const searchField = document.getElementById("search-input");
+            if (searchField) searchField.value = "";
             
             updateActiveFiltersBanner();
             renderCards(allDoctors);
