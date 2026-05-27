@@ -290,7 +290,7 @@
             transform: translateX(24px);
         }
 
-        /* Main Grid Directory View */
+        /* Main Directory Grid Content */
         main {
             flex: 1;
             padding: 2rem 1.5rem 6rem 1.5rem;
@@ -1320,6 +1320,9 @@
                         ${doc.remarks}
                     </div>` : '';
 
+                // Handle conditional Admin fallback logic for empty contributor fields
+                const contributorName = (doc.contributedBy && doc.contributedBy.trim() !== "") ? doc.contributedBy : "Admin";
+
                 card.innerHTML = `
                     <div class="card-content">
                         ${nameHTML}
@@ -1339,7 +1342,7 @@
                         </div>
                         
                         <div class="card-meta">
-                            <span class="contributor-tag">Added by ${doc.contributedBy || 'Anonymous'}</span>
+                            <span class="contributor-tag">Added by ${contributorName}</span>
                         </div>
                     </div>
                     <a class="map-btn-full" href="${doc.mapLink}" target="_blank" rel="noopener noreferrer">Google Maps</a>
